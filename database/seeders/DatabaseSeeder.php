@@ -16,8 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $products = Product::factory(32)
-        ->create();
+        $products = Product::factory(32)->create();
 
         $users = User::factory(10)
         ->has(Address::factory())
@@ -33,7 +32,6 @@ class DatabaseSeeder extends Seeder
             for($i = 0; $i < count($cart); $i++) {
                 $cart[$i]->product_id = $productIds[$i];
                 $cart[$i]->save();
-                dump($productIds);
             }
         }
 
