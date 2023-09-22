@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $products = Product::factory(32)->create();
+        //commenté pour ne pas effacer les donnée en bdd
+        // $products = Product::factory(32)->create();
 
         $users = User::factory(10)
         ->has(Address::factory())

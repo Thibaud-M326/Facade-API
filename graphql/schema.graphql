@@ -17,7 +17,8 @@ type Query {
     ): Product @find
 
     products(
-      size: String @eq
+      gender: String @eq
+      type: String @eq
     ): [Product!]! @paginate(defaultCount: 50)
 }
 
@@ -66,13 +67,16 @@ type Cart {
 
 type Product {
     id: ID!
+    name: String!
     size: String!
-    picture_id: ID!
+    gender: String!
+    type: String!
     price: Int!
     is_available: Int!
+    is_highlighted: Int!
     created_at: DateTime!
     updated_at: DateTime!
 
     #relations
-  carts: [Cart!]! @hasMany
+    carts: [Cart!]! @hasMany
 }
