@@ -23,7 +23,8 @@ class UserFactory extends Factory
 
         return [
             'email' => strtolower($firstName) . "." . strtolower($lastName) . "@gmail.com",
-            'password' => fake()->password(),
+            // 'password' => fake()->password(),
+            'password' => 'secret',
             'first_name' => $firstName,
             'last_name' => $lastName,
             'phone_number' => fake()->phoneNumber(),
