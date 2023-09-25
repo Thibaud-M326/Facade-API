@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function(Blueprint $table) {
-            $table->boolean('is_highlighted')->after('is_available');
+            // $table->boolean('is_highlighted')->after('is_available');
+            $table->string('description')->after('price');
         });
     }
 
