@@ -25,18 +25,9 @@ type Query {
 }
 
 type Mutation {
-  createUser(
-    first_name: String!
-    last_name: String!
-    is_admin: Int!
-    email: String!
-    password: String!
-  ): User @create
-}
-
+    createUser(input: CreateUserInput @spread): User @create
 
 # Joselfonseca' package
-type Mutation {
     login(input: LoginInput @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve")
     refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve")
     logout: LogoutResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve")
@@ -51,8 +42,11 @@ type Mutation {
 #est relié au model User par NameConvention
 type User {
     id: ID!
-    first_name: String!
     email: String!
+    first_name: String!
+    last_name: String!
+    phone_number: String!
+    is_admin: Int!
     email_verified_at: DateTime
     created_at: DateTime!
     updated_at: DateTime!

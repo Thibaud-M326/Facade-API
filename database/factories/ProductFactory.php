@@ -21,6 +21,7 @@ class ProductFactory extends Factory
             'price' => fake()->randomNumber(4, false),
             'description' => fake()->sentence(),
             'is_available' => 1,
+            'is_highlighted' => 0,
         ];
     }
 }

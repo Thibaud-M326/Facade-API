@@ -17,7 +17,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-
         $firstName = fake()->firstName();
         $lastName = fake()->lastName();
 

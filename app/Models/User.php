@@ -35,6 +35,7 @@ class User extends Authenticatable
      */
     protected $attributes = [
         'phone_number' => '000',
+        'is_admin' => 0,
     ];
 
     /**
