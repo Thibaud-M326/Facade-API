@@ -6,11 +6,13 @@ type Query {
       email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
     ): User @find
 
-    users: [User!]! @paginate(defaultCount: 10)
+    users: [User!]! @guard(with: ["api"]) @paginate(defaultCount: 10)
 
     usersByFirstName(
       first_name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
+
+    me: User @guard(with: ["api"]) @auth
 
     product(
       id: ID @eq
@@ -20,23 +22,39 @@ type Query {
       gender: String @eq
       type: String @eq
     ): [Product!]! @paginate(defaultCount: 50)
+
+    carts(
+      user_id: Int @eq
+    ): [Cart] @paginate(defaultCount: 50)
 }
 
 type Mutation {
-  createUser(
-    first_name: String!
-    last_name: String!
-    is_admin: Int!
-    email: String!
-    password: String!
-  ): User @create
+    createUser(input: CreateUserInput @spread): User @create
+
+# Joselfonseca' package
+    login(input: LoginInput @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve")
+    refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve")
+    logout: LogoutResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve")
+    forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve")
+    updateForgottenPassword(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve")
+    register(input: RegisterInput @spread): RegisterResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve")
+    socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
+    verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
+    updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
+
+    updateCartProductQuantity(input: updateCartProductQuantityInput @spread): Cart @update
+    addOneProductToCart(input: addOneProductToCartInput @spread): Cart @create
+    deleteCart(input: removeProductFromCartInput @whereKey): Cart @delete
 }
 
 #est relié au model User par NameConvention
 type User {
     id: ID!
-    first_name: String!
     email: String!
+    first_name: String!
+    last_name: String!
+    phone_number: String!
+    is_admin: Int!
     email_verified_at: DateTime
     created_at: DateTime!
     updated_at: DateTime!
@@ -58,8 +76,8 @@ type Address {
 
 type Cart {
     id: ID!
-    user_id: ID!
-    product_id: ID!
+    user_id: Int!
+    product_id: Int!
     quantity: Int!
     created_at: DateTime!
     updated_at: DateTime!
@@ -72,6 +90,7 @@ type Product {
     gender: String!
     type: String!
     price: Int!
+    description: String!
     is_available: Int!
     is_highlighted: Int!
     created_at: DateTime!
@@ -80,3 +99,4 @@ type Product {
     #relations
     carts: [Cart!]! @hasMany
 }
+

@@ -17,13 +17,13 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-
         $firstName = fake()->firstName();
         $lastName = fake()->lastName();
 
         return [
             'email' => strtolower($firstName) . "." . strtolower($lastName) . "@gmail.com",
-            'password' => fake()->password(),
+            // 'password' => fake()->password(),
+            'password' => 'secret',
             'first_name' => $firstName,
             'last_name' => $lastName,
             'phone_number' => fake()->phoneNumber(),

@@ -19,7 +19,9 @@ class ProductFactory extends Factory
         return [
             'size' => fake()->randomElement(['S', 'M', 'L', 'XL']),
             'price' => fake()->randomNumber(4, false),
+            'description' => fake()->sentence(),
             'is_available' => 1,
+            'is_highlighted' => 0,
         ];
     }
 }

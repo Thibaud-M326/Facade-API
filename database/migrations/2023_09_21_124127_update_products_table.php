@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('products', function(Blueprint $table) {
             $table->boolean('is_highlighted')->after('is_available');
+            $table->string('description')->after('price');
         });
     }
 
