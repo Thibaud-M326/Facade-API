@@ -22,6 +22,10 @@ type Query {
       gender: String @eq
       type: String @eq
     ): [Product!]! @paginate(defaultCount: 50)
+
+    carts(
+      user_id: Int @eq
+    ): [Cart] @paginate(defaultCount: 50)
 }
 
 type Mutation {
@@ -37,6 +41,10 @@ type Mutation {
     socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
     verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
+
+    updateCartProductQuantity(input: updateCartProductQuantityInput @spread): Cart @update
+    addOneProductToCart(input: addOneProductToCartInput @spread): Cart @create
+    deleteCart(input: removeProductFromCartInput @whereKey): Cart @delete
 }
 
 #est relié au model User par NameConvention
@@ -68,8 +76,8 @@ type Address {
 
 type Cart {
     id: ID!
-    user_id: ID!
-    product_id: ID!
+    user_id: Int!
+    product_id: Int!
     quantity: Int!
     created_at: DateTime!
     updated_at: DateTime!

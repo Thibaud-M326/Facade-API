@@ -87,3 +87,18 @@ input UpdatePassword {
     password: String! @rules(apply: ["required", "confirmed", "min:8"])
     password_confirmation: String!
 }
+
+input updateCartProductQuantityInput {
+    id: ID!
+    quantity: Int
+}
+
+input addOneProductToCartInput {
+    user_id: Int!
+    product_id: Int!
+    quantity: Int!
+}
+
+input removeProductFromCartInput {
+    id: ID!
+}
