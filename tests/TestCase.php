@@ -37,8 +37,57 @@ abstract class TestCase extends BaseTestCase
                         'email' => $user->email,
                         'first_name' => $user->first_name,
                         'last_name' => $user->last_name
-                    ] 
-                ] 
+                    ]
+                ]
+        ]);
+    }
+
+    public function testErrorMessageQueriesUser(): void 
+    {
+        $user = User::factory()->create();
+
+        $response = $this->graphQL('
+            query ($id: ID!) {
+                user(id: $id) {
+                    notExistingField
+                }
+            }
+        ', [
+            'id' => $user->id
+        ])
+        ->assertGraphQLErrorMessage("Cannot query field \"notExistingField\" on type \"User\".");
+    }
+
+    public function testCreatesUser(): void 
+    {
+        $user = User::factory()->make();
+
+        $response = $this->graphQL('
+            mutation ($input: CreateUserInput!) {
+                createUser (input: $input) {
+                    email
+                    first_name
+                    last_name
+                    phone_number
+                }
+            }
+        ', [
+            'input' => [
+                'email' => $user->email,
+                'password' => 'secret',
+                'first_name'=> $user->first_name,
+                'last_name'=> $user->last_name,
+                'phone_number' => $user->phone_number,
+            ]
+        ])->assertJson([
+            "data" => [
+                    "createUser" => [
+                        'email' => $user->email,
+                        'first_name'=> $user->first_name,
+                        'last_name'=> $user->last_name,
+                        'phone_number' => $user->phone_number,
+                    ]
+                ]
         ]);
     }
 }
