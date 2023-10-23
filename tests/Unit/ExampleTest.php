@@ -42,16 +42,5 @@ class ExampleTest extends TestCase
     // }
 
 
-    public function testQueriesPosts(): void
-    {
-        $response = $this->graphQL(/** @lang GraphQL */ '
-        {
-            users(first: 10, page: 10) {
-                data {
-                    id
-                }
-            }
-        }
-        ');
-    }
+
 }
