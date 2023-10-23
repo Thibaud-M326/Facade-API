@@ -44,7 +44,7 @@ type Mutation {
 
     updateCartProductQuantity(input: updateCartProductQuantityInput @spread): Cart @update
     addOneProductToCart(input: addOneProductToCartInput @spread): Cart @create
-    deleteCart(input: removeProductFromCartInput @whereKey): Cart @delete
+    deleteCart(input: deleteCartInput @whereKey): Cart @delete
 }
 
 #est relié au model User par NameConvention
