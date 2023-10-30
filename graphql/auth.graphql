@@ -99,6 +99,6 @@ input addOneProductToCartInput {
     quantity: Int!
 }
 
-input removeProductFromCartInput {
+input deleteCartInput {
     id: ID!
 }

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
+
 class ExampleTest extends TestCase
 {
     /**
@@ -13,4 +14,33 @@ class ExampleTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    // /**
+    //  * A test for user found by ID
+    //  */
+    // public function testQueriesUser(): void
+    // {
+    //     $response = $this->graphQL('
+    //         mutation ($id: ID!) {
+    //             createPost(title: $id) {
+    //                 id
+    //                 email
+    //                 first_name
+    //             }
+    //         }
+    //     ', [
+    //         'ID' => 1
+    //     ])->assertJson([
+    //     "data" => [
+    //             "user" => [
+    //                 "email" => "thibaudmaitre@gmail.com", 
+    //                 "first_name" => "Howell", 
+    //                 "last_name" => "Ankunding" 
+    //             ] 
+    //         ] 
+    //     ]);
+    // }
+
+
+
 }
