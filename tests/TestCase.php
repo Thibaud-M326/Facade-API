@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -13,14 +14,17 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use MakesGraphQLRequests;
     use RefreshesSchemaCache;
+    use DatabaseTransactions;
 
     /**
      * A GraphQL test for user found by ID
      */
     public function testQueriesUser(): void
     {
+    //on crée un user en base de donnée 
         $user = User::factory()->create();
 
+    // une requette graphQL 
         $response = $this->graphQL('
             query ($id: ID!) {
                 user(id: $id) {
@@ -31,6 +35,8 @@ abstract class TestCase extends BaseTestCase
             }
         ', [
             'id' => $user->id
+    // on verifie la valeur de $response attendu pour
+    //pour valider le test
         ])->assertJson([
             "data" => [
                     "user" => [
@@ -60,6 +66,7 @@ abstract class TestCase extends BaseTestCase
 
     public function testCreatesUser(): void 
     {
+        //on crée un user sans l'enregistrer en database : make()
         $user = User::factory()->make();
 
         $response = $this->graphQL('
@@ -71,7 +78,9 @@ abstract class TestCase extends BaseTestCase
                     phone_number
                 }
             }
-        ', [
+        ', 
+        //l'insertion des donnée input de la mutation
+        [
             'input' => [
                 'email' => $user->email,
                 'password' => 'secret',
@@ -79,6 +88,7 @@ abstract class TestCase extends BaseTestCase
                 'last_name'=> $user->last_name,
                 'phone_number' => $user->phone_number,
             ]
+        //la verification des resultat attendu
         ])->assertJson([
             "data" => [
                     "createUser" => [
