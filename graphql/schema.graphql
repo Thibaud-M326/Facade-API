@@ -42,9 +42,12 @@ type Mutation {
     verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
 
+
+# Cart
     updateCartProductQuantity(input: updateCartProductQuantityInput @spread): Cart @update
     addOneProductToCart(input: addOneProductToCartInput @spread): Cart @create
     deleteCart(input: deleteCartInput @whereKey): Cart @delete
+    deleteUserCarts(input: deleteUserCartsInput @where(key: "user_id")): [Cart!] @delete
 }
 
 #est relié au model User par NameConvention
@@ -61,7 +64,7 @@ type User {
 
     #relations
     address: Address @hasOne
-    carts: [Cart!]! @hasMany
+    carts: [Cart!] @hasMany
 }
 
 type Address {
