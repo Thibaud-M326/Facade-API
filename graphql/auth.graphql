@@ -88,6 +88,8 @@ input UpdatePassword {
     password_confirmation: String!
 }
 
+#Cart
+
 input updateCartProductQuantityInput {
     id: ID!
     quantity: Int
@@ -101,4 +103,8 @@ input addOneProductToCartInput {
 
 input deleteCartInput {
     id: ID!
+}
+
+input deleteUserCartsInput {
+    user_id: Int!
 }
