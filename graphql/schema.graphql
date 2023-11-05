@@ -102,4 +102,3 @@ type Product {
     #relations
     carts: [Cart!]! @hasMany
 }
-
