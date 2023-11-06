@@ -2,32 +2,37 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 
 type Query {
     user(
-      id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
-      email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
+    	id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
+    	email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
     ): User @find
 
     users: [User!]! @guard(with: ["api"]) @paginate(defaultCount: 10)
 
     usersByFirstName(
-      first_name: String @where(operator: "like")
+    	first_name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
 
     me: User @guard(with: ["api"]) @auth
 
     product(
-      id: ID @eq
+    	id: ID @eq
     ): Product @find
 
     products(
-      gender: String @eq
-      type: String @eq
+		gender: String @eq
+		type: String @eq
     ): [Product!]! @paginate(defaultCount: 50)
 
     carts(
-      user_id: Int @eq
+      	user_id: Int @eq
     ): [Cart] @paginate(defaultCount: 50)
 
     mail: Mail!
+
+	order(
+		id: ID @eq
+      	user_id: Int @where(operator: "like")
+	): [Order!] @find
 }
 
 type Mutation {
@@ -44,12 +49,14 @@ type Mutation {
     verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
 
-
 # Cart
     updateCartProductQuantity(input: updateCartProductQuantityInput @spread): Cart @update
     addOneProductToCart(input: addOneProductToCartInput @spread): Cart @create
     deleteCart(input: deleteCartInput @whereKey): Cart @delete
     deleteUserCarts(input: deleteUserCartsInput @where(key: "user_id")): [Cart!] @delete
+
+# Order
+	createOrder(input: createOrderInput @spread): Order @create
 }
 
 #est relié au model User par NameConvention
@@ -67,6 +74,7 @@ type User {
     #relations
     address: Address @hasOne
     carts: [Cart!] @hasMany
+    orders: [Order!] @hasMany
 }
 
 type Address {
@@ -105,8 +113,20 @@ type Product {
     carts: [Cart!]! @hasMany
 }
 
+type Order {
+    id: ID!
+    user_id: Int!
+	order_items: String!
+	shipped_at: DateTime
+	cancelled_at: DateTime
+	refunded_at: DateTime
+	created_at: DateTime!
+	updated_at: DateTime!
+	deleted_at: DateTime
+}
+
 #type with resolver
 
 type Mail {
-  isMailSentText: String!
+    isMailSentText: String!
 }

@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->ulid('order_id');
+            $table->ulid('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->json('order_items');
+            $table->text('order_items');
             $table->dateTime('shipped_at', $precision = 0)->nullable();
             $table->dateTime('cancelled_at', $precision = 0)->nullable();
             $table->dateTime('refunded_at', $precision = 0)->nullable();
