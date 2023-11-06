@@ -3,35 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Cart extends Model
+class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUlids, softDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
-        'quantity',
+        'order_items',
+        'shipped_at',
+        'cancelled_at',
+        'refunded_at',
     ];
 
     /**
-     * Get the post that owns the comment.
+     * Get the user that owns the comment.
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-     
-    /**
-     * Get the post that owns the comment.
-     */
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
     }
 }

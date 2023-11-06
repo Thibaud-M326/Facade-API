@@ -26,6 +26,8 @@ type Query {
     carts(
       user_id: Int @eq
     ): [Cart] @paginate(defaultCount: 50)
+
+    mail: Mail!
 }
 
 type Mutation {
@@ -101,4 +103,10 @@ type Product {
 
     #relations
     carts: [Cart!]! @hasMany
+}
+
+#type with resolver
+
+type Mail {
+  isMailSentText: String!
 }
