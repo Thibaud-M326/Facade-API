@@ -29,10 +29,11 @@ type Query {
 
     mail: Mail!
 
-	order(
+	orders(
 		id: ID @eq
       	user_id: Int @where(operator: "like")
-	): [Order!] @find
+        orderBy: _ @orderBy(columns: ["created_at"])
+	): [Order] @paginate(defaultCount: 50)
 }
 
 type Mutation {
