@@ -27,7 +27,9 @@ type Query {
       	user_id: Int @eq
     ): [Cart] @paginate(defaultCount: 50)
 
-    mail: Mail!
+    ConfirmOrderMail(
+        user_id: Int
+    ): ConfirmOrderMail!
 
 	orders(
 		id: ID @eq
@@ -128,6 +130,6 @@ type Order {
 
 #type with resolver
 
-type Mail {
+type ConfirmOrderMail {
     isMailSentText: String!
 }
