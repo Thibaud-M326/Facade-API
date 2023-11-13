@@ -110,7 +110,6 @@ input deleteUserCartsInput {
 }
 
 #Order
-
 input createOrderInput {
     user_id: Int!
 	order_items: String!
